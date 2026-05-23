@@ -1,6 +1,37 @@
-# Apex Stride — Adaptive AI Chatbot
+# Brand-Consistent Adaptive AI Chatbot Framework
 
-An AI-powered customer support chatbot for Apex Stride that adapts its tone and responses based on context. All brand settings, tone rules, and product config live in `brand_config.yaml`.
+A brand-agnostic AI chatbot framework that adapts tone, context, and voice in real time. Every response is shaped by the brand's personality and validated against its rules — all driven by a single YAML config file. **No Python changes needed to switch brands.**
+
+This repo contains three brand implementations built on the same shared framework:
+
+| Brand | Industry | Personality |
+|---|---|---|
+| **Apex Stride** | Sports footwear | Tough coach — direct, punchy, challenge-focused |
+| **Ember & Edge** | Premium kitchen knives | Patient chef-instructor — calm, sensory, craft-focused |
+| **CloudBridge** | Technology / SaaS | Reliable partner — clear, empowering, jargon-free |
+
+---
+
+## How It Works
+
+Every message goes through a 6-step pipeline:
+
+```
+User Message
+     │
+     ▼
+1. Context Analysis    — detects emotion, intent, urgency
+2. Special Rules Check — handles service flows (refund/replacement clarification)
+3. Tone Selection      — picks the right tone profile for the situation
+4. LLM Generation      — generates a brand-voice response
+5. Brand Validation    — checks against forbidden phrases and linguistic rules
+6. State Update        — saves session, user profile, risk scores
+     │
+     ▼
+Validated Response  +  Callback (if service issue)
+```
+
+All rules — tone profiles, forbidden phrases, product catalog, voice guidelines, LLM models — live in `brand_config.yaml`. Swap brands by swapping the config file.
 
 ---
 
@@ -8,8 +39,6 @@ An AI-powered customer support chatbot for Apex Stride that adapts its tone and 
 
 - Python 3.9+
 - An OpenAI API key
-
-Install dependencies:
 
 ```bash
 pip install openai flask pyyaml python-dotenv
@@ -32,57 +61,64 @@ Create a `.env` file in the project root:
 OPENAI_API_KEY=sk-your-key-here
 ```
 
-**3. (Optional) Point to a custom config**
+---
 
-By default the app reads `brand_config.yaml` from the project root. To use a different file:
+## Running Each Brand
+
+### Apex Stride — Sports Footwear
+> *"Push Beyond"* — Direct, punchy, challenge-focused. Your toughest coach.
+
 ```bash
-export BRAND_CONFIG_PATH=/path/to/your_config.yaml
+python web_interface_universal.py    # Web UI → http://localhost:5000
+python universal_adaptive_framework.py  # CLI demo
+```
+
+### Ember & Edge — Premium Kitchen Knives
+> *"Where Craft Meets Kitchen"* — Calm, sensory, craft-focused. A patient chef-instructor.
+
+```bash
+python ember_edge_web.py        # Web UI → http://localhost:5000
+python ember_edge_framework.py  # CLI demo
+```
+
+### CloudBridge — Technology / SaaS
+> *"Empower Every Person"* — Clear, empowering, jargon-free. The reliable partner.
+
+```bash
+python web_interface_universal_cloudbridge.py        # Web UI → http://localhost:5000
+python universal_adaptive_framework.py  # CLI demo
 ```
 
 ---
 
-## Running the App
+## Configuring a Brand
 
-**Web interface (recommended)**
-```bash
-python web_interface_universal.py
-```
-Then open [http://localhost:5000](http://localhost:5000)
+Everything lives in `brand_config.yaml`. Key sections:
 
-**Command-line demo**
-```bash
-python universal_adaptive_framework.py
-```
-Runs the demo scenarios from `brand_config.yaml` and prints responses with performance stats.
+- `brand` — name, tagline, personality description
+- `voice_guidelines` — do/don't rules injected into every prompt
+- `core_values` — values the LLM must apply on every response
+- `products` — the only products the bot is allowed to recommend
+- `tone_profiles` — tone variants (e.g. challenge, support, coach, warm)
+- `tone_selection_rules` — maps situations to tone profiles
+- `brand_guard` — forbidden phrases, linguistic DNA checks, context rules
+- `special_rules` — service flows (refund, replacement) with callback hooks
+- `llm` — models, temperature, max tokens, pricing per model
 
----
 
-## Project Files
-
-| File | What it does |
-|---|---|
-| `brand_config.yaml` | All config — brand voice, products, tone rules, LLM settings |
-| `universal_adaptive_framework.py` | Main pipeline — ties all modules together |
-| `web_interface_universal.py` | Flask web UI |
-| `context_understanding_engine.py` | Detects emotion, intent, urgency from user messages |
-| `tone_adaptation_engine.py` | Picks the right tone profile for each situation |
-| `brand_consistency_guard.py` | Validates responses against brand rules before sending |
-| `conversation_state_manager.py` | Tracks session state, user profile, risk signals |
-| `config_loader.py` | Loads and caches `brand_config.yaml` |
-| `performance_tracker.py` | Tracks latency, tokens, and cost per step |
+No Python changes needed — the config path is the only thing that changes.
 
 ---
 
-## Changing the Brand
+## Web UI Features
 
-Edit `brand_config.yaml` — no Python changes needed. Key sections to update:
+Each brand's web interface includes:
 
-- `brand` — name, tagline, personality
-- `voice_guidelines` — what to do and not do
-- `products` — your product catalog
-- `tone_profiles` — tone variants and when to use them
-- `special_rules` — support flows (refund, replacement, etc.)
-- `llm` — which models to use and at what temperature
+- **Chat** — adaptive bot responses in real time
+- **Context panel** — detected emotion, intent, motivation, urgency per message
+- **Brand evaluation** — LLM-scored brand voice consistency (1–5 scale)
+- **Baseline comparison** — adaptive bot vs a generic corporate bot, scored side by side
+- **Performance metrics** — latency, token count, and cost broken down per pipeline step
 
 ---
 
@@ -91,4 +127,4 @@ Edit `brand_config.yaml` — no Python changes needed. Key sections to update:
 | Variable | Required | Default | Description |
 |---|---|---|---|
 | `OPENAI_API_KEY` | Yes | — | Your OpenAI API key |
-| `BRAND_CONFIG_PATH` | No | `./brand_config.yaml` | Path to config file |
+| `BRAND_CONFIG_PATH` | No | `./brand_config.yaml` | Path to config file — override to switch brands |
