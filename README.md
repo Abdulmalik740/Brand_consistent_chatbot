@@ -126,6 +126,8 @@ Each brand's web interface includes:
 
 | Variable | Required | Default | Description |
 |---|---|---|---|
+| `OPENAI_API_KEY` | Yes | — | Your OpenAI API key |
+| `BRAND_CONFIG_PATH` | No | `./brand_config.yaml` | Path to config file — override to switch brands |
 
 ## Multi-Brand Launcher
  
@@ -143,5 +145,4 @@ python ember_edge_web.py            # Ember & Edge → port 5002
 ```
  
 Then open `multi_brand_dropdown.html` in your browser. Use the dropdown in the top-right corner to switch between brands instantly.
-| `OPENAI_API_KEY` | Yes | — | Your OpenAI API key |
-| `BRAND_CONFIG_PATH` | No | `./brand_config.yaml` | Path to config file — override to switch brands |
+
