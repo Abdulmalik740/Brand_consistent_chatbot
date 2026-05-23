@@ -77,7 +77,7 @@ python universal_adaptive_framework.py  # CLI demo
 > *"Where Craft Meets Kitchen"* — Calm, sensory, craft-focused. A patient chef-instructor.
 
 ```bash
-python ember_edge_web.py        # Web UI → http://localhost:5000
+python ember_edge_web.py        # Web UI → http://localhost:5002
 python ember_edge_framework.py  # CLI demo
 ```
 
@@ -85,7 +85,7 @@ python ember_edge_framework.py  # CLI demo
 > *"Empower Every Person"* — Clear, empowering, jargon-free. The reliable partner.
 
 ```bash
-python web_interface_universal_cloudbridge.py        # Web UI → http://localhost:5000
+python web_interface_universal_cloudbridge.py        # Web UI → http://localhost:5003
 python universal_adaptive_framework.py  # CLI demo
 ```
 
