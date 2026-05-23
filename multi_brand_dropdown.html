@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Brand Platform</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Inter', sans-serif;
+            overflow: hidden; 
+        }
+        
+        /* Floating Brand Switcher - Top Right */
+        .brand-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+        }
+        
+        .brand-select {
+            padding: 14px 45px 14px 20px;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(30, 41, 59, 0.98));
+            backdrop-filter: blur(20px);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            appearance: none;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+        }
+        
+        .brand-select:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .brand-select option {
+            background: #1e293b;
+            color: white;
+            padding: 12px;
+            font-weight: 600;
+        }
+        
+        /* Full-screen iframe container */
+        .iframe-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100vw;
+            height: 100vh;
+        }
+        
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+        
+        /* Loading indicator */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #0f172a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 0.4s ease;
+        }
+        
+        .loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            margin-top: 20px;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Brand Switcher Dropdown (Top Right) -->
+    <div class="brand-switcher">
+        <select class="brand-select" id="brandSelect" onchange="switchBrand()">
+            <option value="apex"> Apex Stride</option>
+            <option value="cloudbridge"> CloudBridge</option>
+            <option value="ember"> Ember & Edge</option>
+        </select>
+    </div>
+    
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Loading <span id="loadingBrand">Apex Stride</span>...</div>
+    </div>
+    
+    <!-- Full-screen iframe for Brand UIs -->
+    <div class="iframe-container">
+        <iframe id="brandFrame" src="http://localhost:5000"></iframe>
+    </div>
+
+   <script>
+    const brandUrls = {
+        apex: 'http://localhost:5000',
+        cloudbridge: 'http://localhost:5001',
+        ember: 'http://localhost:5002'
+    };
+
+    const brandNames = {
+        apex: 'Apex Stride',
+        cloudbridge: 'CloudBridge',
+        ember: 'Ember & Edge'
+    };
+
+    const iframe = document.getElementById('brandFrame');
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const loadingBrand = document.getElementById('loadingBrand');
+    const select = document.getElementById('brandSelect');
+
+    let currentBrand = 'apex';
+
+    function showLoading(brand) {
+        loadingBrand.textContent = brandNames[brand];
+        loadingOverlay.classList.remove('hidden');
+    }
+
+    function hideLoading() {
+        setTimeout(() => {
+            loadingOverlay.classList.add('hidden');
+        }, 400);
+    }
+
+    function switchBrand() {
+        const newBrand = select.value;
+        if (newBrand === currentBrand) return;
+
+        currentBrand = newBrand;
+        showLoading(newBrand);
+
+        iframe.src = brandUrls[newBrand];
+    }
+
+    // 🔹 Always listen this ONCE
+    iframe.addEventListener('load', hideLoading);
+
+    // 🔹 Initial load
+    window.addEventListener('DOMContentLoaded', () => {
+        showLoading('apex');
+    });
+</script>
+
+</body>
+</html>
