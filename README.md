@@ -126,5 +126,22 @@ Each brand's web interface includes:
 
 | Variable | Required | Default | Description |
 |---|---|---|---|
+
+## Multi-Brand Launcher
+ 
+To run all three brands at once and switch between them with a dropdown, start each on its own port then open `multi_brand_dropdown.html` in your browser:
+ 
+```bash
+# Terminal 1
+python web_interface_universal.py   # Apex Stride  → port 5000
+ 
+# Terminal 2
+python cloudbridge_web.py           # CloudBridge  → port 5001
+ 
+# Terminal 3
+python ember_edge_web.py            # Ember & Edge → port 5002
+```
+ 
+Then open `multi_brand_dropdown.html` in your browser. Use the dropdown in the top-right corner to switch between brands instantly.
 | `OPENAI_API_KEY` | Yes | — | Your OpenAI API key |
 | `BRAND_CONFIG_PATH` | No | `./brand_config.yaml` | Path to config file — override to switch brands |
