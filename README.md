@@ -85,7 +85,7 @@ python ember_edge_framework.py  # CLI demo
 > *"Empower Every Person"* — Clear, empowering, jargon-free. The reliable partner.
 
 ```bash
-python web_interface_universal_cloudbridge.py        # Web UI → http://localhost:5003
+python web_interface_universal_cloudbridge.py        # Web UI → http://localhost:5001
 python universal_adaptive_framework.py  # CLI demo
 ```
 
@@ -136,7 +136,7 @@ To run all three brands at once and switch between them with a dropdown, start e
 python web_interface_universal.py   # Apex Stride  → port 5000
  
 # Terminal 2
-python cloudbridge_web.py           # CloudBridge  → port 5001
+python web_interface_universal_cloudbridge.py           # CloudBridge  → port 5001
  
 # Terminal 3
 python ember_edge_web.py            # Ember & Edge → port 5002
